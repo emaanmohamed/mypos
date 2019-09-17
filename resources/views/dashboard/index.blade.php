@@ -6,9 +6,7 @@
 
         <section class="content-header">
 
-        <h1>Blank Page
-            <small>it all starts here</small>
-        </h1>
+        <h1>@lang('site.dashboard')</h1>
 
         <ol class="breadcrumb">
             <li class="active"><i class="fa fa-dashboard"></i>@lang('site.dashboard')</li>
