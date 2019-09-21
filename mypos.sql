@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 19, 2019 at 12:16 PM
+-- Generation Time: Sep 21, 2019 at 10:00 PM
 -- Server version: 10.3.16-MariaDB
--- PHP Version: 7.2.20
+-- PHP Version: 7.1.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -39,21 +39,8 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(9, '2014_10_12_000000_create_users_table', 1),
-(10, '2014_10_12_100000_create_password_resets_table', 1),
-(11, '2019_09_15_111302_laratrust_setup_tables', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `password_resets`
---
-
-CREATE TABLE `password_resets` (
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+(1, '2019_09_21_134835_create_users_table', 1),
+(2, '2019_09_21_144532_laratrust_setup_tables', 1);
 
 -- --------------------------------------------------------
 
@@ -75,16 +62,16 @@ CREATE TABLE `permissions` (
 --
 
 INSERT INTO `permissions` (`id`, `name`, `display_name`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'create_users', 'Create Users', 'Create Users', '2019-09-15 13:50:23', '2019-09-15 13:50:23'),
-(2, 'read_users', 'Read Users', 'Read Users', '2019-09-15 13:50:23', '2019-09-15 13:50:23'),
-(3, 'update_users', 'Update Users', 'Update Users', '2019-09-15 13:50:23', '2019-09-15 13:50:23'),
-(4, 'delete_users', 'Delete Users', 'Delete Users', '2019-09-15 13:50:23', '2019-09-15 13:50:23'),
-(5, 'create_acl', 'Create Acl', 'Create Acl', '2019-09-15 13:50:23', '2019-09-15 13:50:23'),
-(6, 'read_acl', 'Read Acl', 'Read Acl', '2019-09-15 13:50:23', '2019-09-15 13:50:23'),
-(7, 'update_acl', 'Update Acl', 'Update Acl', '2019-09-15 13:50:23', '2019-09-15 13:50:23'),
-(8, 'delete_acl', 'Delete Acl', 'Delete Acl', '2019-09-15 13:50:23', '2019-09-15 13:50:23'),
-(9, 'read_profile', 'Read Profile', 'Read Profile', '2019-09-15 13:50:24', '2019-09-15 13:50:24'),
-(10, 'update_profile', 'Update Profile', 'Update Profile', '2019-09-15 13:50:24', '2019-09-15 13:50:24');
+(1, 'create_users', 'Create Users', 'Create Users', '2019-09-21 13:15:09', '2019-09-21 13:15:09'),
+(2, 'read_users', 'Read Users', 'Read Users', '2019-09-21 13:15:09', '2019-09-21 13:15:09'),
+(3, 'update_users', 'Update Users', 'Update Users', '2019-09-21 13:15:09', '2019-09-21 13:15:09'),
+(4, 'delete_users', 'Delete Users', 'Delete Users', '2019-09-21 13:15:09', '2019-09-21 13:15:09'),
+(5, 'create_acl', 'Create Acl', 'Create Acl', '2019-09-21 13:15:09', '2019-09-21 13:15:09'),
+(6, 'read_acl', 'Read Acl', 'Read Acl', '2019-09-21 13:15:09', '2019-09-21 13:15:09'),
+(7, 'update_acl', 'Update Acl', 'Update Acl', '2019-09-21 13:15:09', '2019-09-21 13:15:09'),
+(8, 'delete_acl', 'Delete Acl', 'Delete Acl', '2019-09-21 13:15:09', '2019-09-21 13:15:09'),
+(9, 'read_profile', 'Read Profile', 'Read Profile', '2019-09-21 13:15:09', '2019-09-21 13:15:09'),
+(10, 'update_profile', 'Update Profile', 'Update Profile', '2019-09-21 13:15:10', '2019-09-21 13:15:10');
 
 -- --------------------------------------------------------
 
@@ -145,7 +132,8 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `display_name`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'super_admin', 'Super Admin', 'Super Admin', '2019-09-15 13:50:23', '2019-09-15 13:50:23');
+(1, 'super_admin', 'Super Admin', 'Super Admin', '2019-09-21 13:15:09', '2019-09-21 13:15:09'),
+(2, 'admin', 'Admin', 'Admin', '2019-09-21 13:15:11', '2019-09-21 13:15:11');
 
 -- --------------------------------------------------------
 
@@ -173,7 +161,7 @@ INSERT INTO `role_user` (`role_id`, `user_id`, `user_type`) VALUES
 --
 
 CREATE TABLE `users` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+  `id` int(10) UNSIGNED NOT NULL,
   `first_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -189,11 +177,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'super', 'admin', 'super_admin@app.com', NULL, '$2y$10$A1goDS65RV47PJvvOzPl1eD1As.zpb4GTILxq/Tp7EBsn8kUvzISO', NULL, '2019-09-15 13:50:25', '2019-09-15 13:50:25'),
-(2, 'Eman', 'Mohamed', 'emahmoud@beltonefinancial.com', NULL, '$2y$10$IzFQON9hWXBUSrQD1N4zQeSu24e/p.QYNiFQe58RaueplP9OANf2q', NULL, '2019-09-17 10:18:10', '2019-09-17 10:18:10'),
-(4, 'Eman', 'Mohamed', 'emahmoppud@beltonefinancial.com', NULL, '$2y$10$q5uiv/EkkJEO8ejHf/OyC.SK2gipClt31Wr2SdsL9tD4DyGWfHuX.', NULL, '2019-09-17 10:31:49', '2019-09-17 10:31:49'),
-(6, 'Budour', 'F', 'apps@beltonefinancial.com', NULL, '$2y$10$xChwV2gOW8CvKQzfctIPWONLoDgQgUWbHTmS2eXCTGSv7d2k0jklG', NULL, '2019-09-17 10:33:35', '2019-09-17 10:33:35'),
-(7, 'Ahmed', 'Mohamed', 'ahmed@gmail.com', NULL, '$2y$10$ceWIs.BALGom1SvsO7cviusmWGnw9raxfeB9fH1W52FWr7ldv3I9C', NULL, '2019-09-18 14:20:49', '2019-09-18 14:20:49');
+(1, 'super', 'admin', 'super_admin@app.com', NULL, '$2y$10$cLY.AS2UEecX15m8UyoYHuZrjuNs9mhRIdBFddzHyU.A2Azw9IJsa', 'drQ5y3DOWbNBzDQlBksX9Qx545H4wELFzCvTDJF1J4hqRRPUaH0RDBJju5KD', '2019-09-21 13:15:11', '2019-09-21 13:15:11');
 
 --
 -- Indexes for dumped tables
@@ -204,12 +188,6 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `email_verified_a
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `password_resets`
---
-ALTER TABLE `password_resets`
-  ADD KEY `password_resets_email_index` (`email`);
 
 --
 -- Indexes for table `permissions`
@@ -261,7 +239,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `permissions`
@@ -273,13 +251,13 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

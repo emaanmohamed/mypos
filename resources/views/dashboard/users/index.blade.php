@@ -54,11 +54,15 @@
                                     <td>{{ $user->email }}</td>
                                     <td>
                                         <a href="{{ route('dashboard.users.edit', $user->id) }}" class="btn btn-info btn-sm">@lang('site.edit')</a>
-                                        <form action="{{ route('dashboard.users.destroy', $user->id) }}" method="post" style=" display: inline-block">
-                                            {{ csrf_field() }}
-                                            {{ method_field('delete') }}
-                                            <button type="submit" class="btn btn-danger btn-sm">@lang('site.delete')</button>
-                                        </form>
+                                       @if (auth()->user()->hasPermission('delete_users'))
+                                            <form action="{{ route('dashboard.users.destroy', $user->id) }}" method="post" style=" display: inline-block">
+                                                {{ csrf_field() }}
+                                                {{ method_field('delete') }}
+                                                <button type="submit" class="btn btn-danger btn-sm">@lang('site.delete')</button>
+                                            </form>
+                                           @else
+                                           <button class="btn btn-danger disabled">@lang('site.delete')</button>
+                                           @endif
                                     </td>
                                 </tr>
                                 @endforeach
