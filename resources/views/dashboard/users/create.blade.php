@@ -55,6 +55,37 @@
                         </div>
 
                         <div class="form-group">
+                            <label>@lang('site.permission')</label>
+                            <div class="nav-tabs-custom">
+                                @php
+                                    $models = ['users', 'categories', 'products'];
+                                  @endphp
+
+                                <ul class="nav nav-tabs">
+                                    @foreach($models as $index => $model)
+                                    <li class={{ $index == 0 ? 'active' : ''}}><a href="#{{ $model }}" data-toggle="tab">@lang('site.' . $model)</a> </li>
+                                        @endforeach
+                                </ul>
+
+                                <div class="tab-content">
+
+                                @foreach($models as $index => $model)
+
+                                    <div class="tab-pane {{ $index == 0 ? 'active' : '' }}" id="{{ $model }}">
+                                        <label><input type="checkbox" name="permissions[]" value="create_{{ $model }}">@lang('site.create')</label>
+                                        <label><input type="checkbox" name="permissions[]" value="read_{{ $model }}">@lang('site.read')</label>
+                                        <label><input type="checkbox" name="permissions[]" value="update_{{ $model }}">@lang('site.update')</label>
+                                        <label><input type="checkbox" name="permissions[]" value="delete_{{ $model }}">@lang('site.delete')</label>
+                                    </div>
+                                    @endforeach
+                                </div><!-- end of tab content -->
+
+                            </div><!-- end of nav tabs -->
+
+                        </div>
+
+
+                        <div class="form-group">
                             <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>@lang('site.add')</button>
                         </div>
 
@@ -66,4 +97,4 @@
 
     </div>
 
-    @endsection
+@endsection

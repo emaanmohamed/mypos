@@ -5,6 +5,9 @@ return [
 
 
     'add' => 'اضف',
+    'create' => 'اضافه',
+    'read' => 'عرض',
+    'update' => 'تعديل',
     'edit' => 'تعديل',
     'delete' => 'حذف',
     'search' => 'بحث',
@@ -24,5 +27,6 @@ return [
     'first_name' => 'الاسم الاول' ,
     'last_name' => 'الاسم الاخير',
     'email' => 'البريد الالكتروني',
-    'action' => 'اكشن'
+    'action' => 'اكشن',
+    'permissions' => 'الصلاحيات',
 ];
