@@ -8,10 +8,20 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-
-    public function index()
+    public function __construct()
     {
-        $users = User::all();
+        $this->middleware(['permission:read_users'])->only('index');
+        $this->middleware(['permission:create_users'])->only('create');
+        $this->middleware(['permission:update_users'])->only('edit');
+        $this->middleware(['permission:delete_users'])->only('delete');
+    }
+
+    public function index(Request $request)
+    {
+        $users = User::whereRoleIs('admin')->when($request->search, function ($query) use ($request) {
+            return $query->where('first_name', 'like', '%' . $request->search . '%')
+                ->orWhere('last_name', 'like', '%' . $request->search . '%');
+        })->get();
         return view('dashboard.users.index', compact('users'));
     }
 
@@ -36,8 +46,6 @@ class UserController extends Controller
         $user->attachRole('admin');
         $user->syncPermissions($request->permissions);
 
-
-
         session()->flash('success', __('site.added_successfully'));
         return redirect()->route('dashboard.users.index');
 
@@ -49,14 +57,27 @@ class UserController extends Controller
         //
     }
 
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('dashboard.users.edit', compact('user'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+        ]);
+        $user = User::findOrFail($id);
+        $request_data = $request->except(['permissions']);
+        $user->update($request_data);
+        $user->syncPermissions($request->permissions);
+
+        session()->flash('success', __('site.updated_successfully'));
+        return redirect()->route('dashboard.users.index');
+
     }
 
     public function destroy(User $user)

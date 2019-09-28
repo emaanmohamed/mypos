@@ -20,7 +20,7 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title" style="margin-bottom: 15px">@lang('site.users')</h3>
-                    <form>
+                    <form action="{{ route('dashboard.users.index') }}" method="get">
                         <div class="row">
                             <div class="col-md-4">
                                 <input type="text" name="search" class="form-control" placeholder="@lang('site.search')">
@@ -53,7 +53,11 @@
                                     <td>{{ $user->last_name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>
-                                        <a href="{{ route('dashboard.users.edit', $user->id) }}" class="btn btn-info btn-sm">@lang('site.edit')</a>
+                                        @if (auth()->user()->hasPermission('update_users'))
+                                        <a href="{{ route('dashboard.users.edit', $user->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit">@lang('site.edit')</a>
+                                        @else
+                                            <a href="#" class="btn btn-info btn-sm disabled"><i class="fa fa-edit"></i>@lang('site.edit')</a>
+                                            @endif
                                        @if (auth()->user()->hasPermission('delete_users'))
                                             <form action="{{ route('dashboard.users.destroy', $user->id) }}" method="post" style=" display: inline-block">
                                                 {{ csrf_field() }}
@@ -61,7 +65,7 @@
                                                 <button type="submit" class="btn btn-danger btn-sm">@lang('site.delete')</button>
                                             </form>
                                            @else
-                                           <button class="btn btn-danger disabled">@lang('site.delete')</button>
+                                           <button class="btn btn-danger btn-sm disabled"><i class="fa fa-trash"></i>@lang('site.delete')</button>
                                            @endif
                                     </td>
                                 </tr>
