@@ -23,7 +23,7 @@
                     <form action="{{ route('dashboard.users.index') }}" method="get">
                         <div class="row">
                             <div class="col-md-4">
-                                <input type="text" name="search" class="form-control" placeholder="@lang('site.search')">
+                                <input type="text" name="search" class="form-control" placeholder="@lang('site.search')" value="{{ request()->search }}">
                             </div>
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>@lang('site.search')</button>
@@ -41,6 +41,7 @@
                                 <th>@lang('site.first_name')</th>
                                 <th>@lang('site.last_name')</th>
                                 <th>@lang('site.email')</th>
+                                <th>@lang('site.image')</th>
                                 <th>@lang('site.action')</th>
                             </tr>
                             </thead>
@@ -52,9 +53,10 @@
                                     <td>{{ $user->first_name }}</td>
                                     <td>{{ $user->last_name }}</td>
                                     <td>{{ $user->email }}</td>
+                                    <td><img src="{{ $user->image_path  }}" style="width: 100px" class="img-thumbnail" alt=""></td>
                                     <td>
                                         @if (auth()->user()->hasPermission('update_users'))
-                                        <a href="{{ route('dashboard.users.edit', $user->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit">@lang('site.edit')</a>
+                                            <a href="{{ route('dashboard.users.edit', $user->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i>@lang('site.edit')</a>
                                         @else
                                             <a href="#" class="btn btn-info btn-sm disabled"><i class="fa fa-edit"></i>@lang('site.edit')</a>
                                             @endif
@@ -62,7 +64,7 @@
                                             <form action="{{ route('dashboard.users.destroy', $user->id) }}" method="post" style=" display: inline-block">
                                                 {{ csrf_field() }}
                                                 {{ method_field('delete') }}
-                                                <button type="submit" class="btn btn-danger btn-sm">@lang('site.delete')</button>
+                                                <button type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i>@lang('site.delete')</button>
                                             </form>
                                            @else
                                            <button class="btn btn-danger btn-sm disabled"><i class="fa fa-trash"></i>@lang('site.delete')</button>
@@ -74,6 +76,8 @@
                             </tbody>
 
                         </table>
+
+                        {{ $users->appends(request()->query())->links() }}
 
                     @else
                         <h2>@lang('site.no_data_found')</h2>

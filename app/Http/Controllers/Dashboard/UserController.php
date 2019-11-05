@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Dashboard;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
@@ -21,7 +24,7 @@ class UserController extends Controller
         $users = User::whereRoleIs('admin')->when($request->search, function ($query) use ($request) {
             return $query->where('first_name', 'like', '%' . $request->search . '%')
                 ->orWhere('last_name', 'like', '%' . $request->search . '%');
-        })->get();
+        })->latest()->paginate(10);
         return view('dashboard.users.index', compact('users'));
     }
 
@@ -39,8 +42,22 @@ class UserController extends Controller
             'password' => 'required|confirmed',
         ]);
 
-        $request_data = $request->except(['password', 'password_confirmation', 'permissions']);
+        if (User::where('email', '=', Input::get('email'))->exists()) {
+            return back()->withErrors([
+                'message' => 'للاسف هذا الايميل مستخدم الرجاء التسجيل باخر مختلف',
+            ]);
+        }
+
+        $request_data = $request->except(['password', 'password_confirmation', 'permissions', 'image']);
         $request_data['password'] = bcrypt($request->password);
+
+        if ($request->image) {
+            Image::make($request->image)->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save(public_path('uploads/user_images/' . $request->image->hashName()));
+
+            $request_data['image'] = $request->image->hashName();
+        }
 
         $user = User::create($request_data);
         $user->attachRole('admin');
@@ -48,7 +65,6 @@ class UserController extends Controller
 
         session()->flash('success', __('site.added_successfully'));
         return redirect()->route('dashboard.users.index');
-
 
     }
 
@@ -80,8 +96,15 @@ class UserController extends Controller
 
     }
 
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        if ($user->image != 'default.png') {
+                Storage::disk('public_uploads')->delete('/user_images/' . $user->image);
+        }
+
+        $user->delete();
+        session()->flash('success', ('site.deleted_successfully'));
+        return redirect()->route('dashboard.users.index');
     }
 }

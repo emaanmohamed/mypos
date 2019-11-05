@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password', 'image'
     ];
 
     /**
@@ -30,11 +30,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
+    protected $appends = ['image_path'];
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -47,5 +44,10 @@ class User extends Authenticatable
     public function getLasrNameAttribute($value)
     {
         return ucfirst($value);
+    }
+
+    public function getImagePathAttribute()
+    {
+        return asset('uploads/user_images/' . $this->image);
     }
 }
